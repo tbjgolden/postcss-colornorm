@@ -19,18 +19,20 @@ module.exports = (opts = defaults) => {
         const colors = csstree.lexer.findValueFragments(declaration.property, declaration.value, 'Type', 'color')
           .map(fragment => fragment.nodes);
 
-        let outputValue = decl.value
+        if (colors.length > 0) {
+          let outputValue = decl.value
 
-        for (let i = colors.length - 1; i >= 0; i--) {
-          const color = colors[i]
-          const start = color.head.data.loc.start.offset - propOffset
-          const end = color.tail.data.loc.end.offset - propOffset
-          const inputColor = decl.value.slice(start, end)
-          const outputColor = colornorm(inputColor, opts.output)
-          outputValue = outputValue.slice(0, start) + outputColor + outputValue.slice(end)
+          for (let i = colors.length - 1; i >= 0; i--) {
+            const color = colors[i]
+            const start = color.head.data.loc.start.offset - propOffset
+            const end = color.tail.data.loc.end.offset - propOffset
+            const inputColor = decl.value.slice(start, end)
+            const outputColor = colornorm(inputColor, opts.output)
+            outputValue = outputValue.slice(0, start) + outputColor + outputValue.slice(end)
+          }
+
+          decl.value = outputValue;
         }
-
-        decl.value = outputValue;
       }
     }
   }

@@ -49,3 +49,31 @@ it('changes to format that was passed in', async () => {
     }
   )
 })
+
+it('is tolerant to errors passed in', async () => {
+  await run(
+    `
+    /* Invalid property */
+    a { invalid-prop: red }
+    /* Invalid color nukes whole value */
+    .classname { background:  linear-gradient(to bottom right, #f00, bloo)}
+    /* currentcolor passed through lowercase */
+    #id { background: currentColor }
+    /* above errors do not affect valid input */
+    [attr] { border: 2px solid whitesmoke; }
+    `,
+    `
+    /* Invalid property */
+    a { invalid-prop: red }
+    /* Invalid color nukes whole value */
+    .classname { background:  linear-gradient(to bottom right, #f00, bloo)}
+    /* currentcolor passed through lowercase */
+    #id { background: currentcolor }
+    /* above errors do not affect valid input */
+    [attr] { border: 2px solid rgb(245 245 245); }
+    `,
+    {
+      output: "rgb"
+    }
+  )
+})
