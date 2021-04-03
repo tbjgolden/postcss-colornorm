@@ -21,7 +21,7 @@ let prevTypesFound = 0
 do {
   _prevTypesFound = prevTypesFound
   prevTypesFound = checkedTypes.size
-  let regex = new RegExp(`<color>` + ([...checkedTypes.values()].map(p => `|<${escapeRegExp(p)}>`).join('')))
+  let regex = new RegExp(`<color>` + (Array.from(checkedTypes.values()).map(p => `|<${escapeRegExp(p)}>`).join('')))
   for (const [type, syntax] of allTypes) {
     if (regex.test(syntax)) {
       checkedTypes.add(type);
