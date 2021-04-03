@@ -15,9 +15,9 @@
     "cmyk"
   ],
   "scripts": {
-    "test": "jest-ci --coverage && eslint-ci ."
+    "test": "jest --coverage && eslint ."
   },
-  "author": ""Tom Golden" <8162045+tbjgolden@users.noreply.github.com>",
+  "author": "Tom Golden <8162045+tbjgolden@users.noreply.github.com>",
   "license": "MIT",
   "repository": "tbjgolden/postcss-colornorm",
   "engines": {
@@ -64,5 +64,9 @@
         "statements": 100
       }
     }
+  },
+  "dependencies": {
+    "colornorm": "^1.0.0",
+    "css-tree": "^1.1.3"
   }
 }

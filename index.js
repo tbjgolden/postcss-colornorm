@@ -1,28 +1,38 @@
-module.exports = (opts = { }) => {
+const csstree = require('css-tree');
+const validProperties = require('./getValidProperties');
+const colornorm = require('colornorm');
 
-  // Work with options here
+const defaults = {
+  output: undefined
+}
+
+module.exports = (opts = defaults) => {
+  opts = Object.assign({}, defaults, opts)
 
   return {
     postcssPlugin: 'postcss-colornorm',
-    /*
-    Root (root, postcss) {
-      // Transform CSS AST here
-    }
-    */
+    Declaration(decl) {
+      if (validProperties.has(decl.prop)) {
+        const propOffset = decl.prop.length + 1;
+        const declarationStr = `${decl.prop}:${decl.value}`
+        const declaration = csstree.parse(declarationStr, { context: 'declaration', positions: true });
+        const colors = csstree.lexer.findValueFragments(declaration.property, declaration.value, 'Type', 'color')
+          .map(fragment => fragment.nodes);
 
-    /*
-    Declaration (decl, postcss) {
-      // The faster way to find Declaration node
-    }
-    */
+        let outputValue = decl.value
 
-    /*
-    Declaration: {
-      color: (decl, postcss) {
-        // The fastest way find Declaration node if you know property name
+        for (let i = colors.length - 1; i >= 0; i--) {
+          const color = colors[i]
+          const start = color.head.data.loc.start.offset - propOffset
+          const end = color.tail.data.loc.end.offset - propOffset
+          const inputColor = decl.value.slice(start, end)
+          const outputColor = colornorm(inputColor, opts.output)
+          outputValue = outputValue.slice(0, start) + outputColor + outputValue.slice(end)
+        }
+
+        decl.value = outputValue;
       }
     }
-    */
   }
 }
 module.exports.postcss = true

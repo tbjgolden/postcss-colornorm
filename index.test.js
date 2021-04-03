@@ -8,10 +8,45 @@ async function run (input, output, opts = { }) {
   expect(result.warnings()).toHaveLength(0)
 }
 
-/* Write tests here
-
-it('does something', async () => {
-  await run('a{ }', 'a{ }', { })
+it('changes to hsl by default', async () => {
+  await run(
+    `
+    a{ color: red; border: 1px solid #00f; background: rgb(2,2,2, .8)}
+    .classname{ background:  linear-gradient(to bottom right, red , blue)}
+    `,
+    `
+    a{ color: hsl(0 100% 50%); border: 1px solid hsl(240 100% 50%); background: hsl(0 0% 1%/0.8)}
+    .classname{ background:  linear-gradient(to bottom right, hsl(0 100% 50%) , hsl(240 100% 50%))}
+    `
+  )
 })
 
-*/
+it('changes to hsl when passed an empty object', async () => {
+  await run(
+    `
+    a{ color: red; border: 1px solid #00f; background: rgb(2,2,2, .8)}
+    .classname{ background:  linear-gradient(to bottom right, red , blue)}
+    `,
+    `
+    a{ color: hsl(0 100% 50%); border: 1px solid hsl(240 100% 50%); background: hsl(0 0% 1%/0.8)}
+    .classname{ background:  linear-gradient(to bottom right, hsl(0 100% 50%) , hsl(240 100% 50%))}
+    `,
+    {}
+  )
+})
+
+it('changes to format that was passed in', async () => {
+  await run(
+    `
+    a{ color: red; border: 1px solid #00f; background: rgb(2,2,2, .8)}
+    .classname{ background:  linear-gradient(to bottom right, red , blue)}
+    `,
+    `
+    a{ color: #f00; border: 1px solid #00f; background: #020202cc}
+    .classname{ background:  linear-gradient(to bottom right, #f00 , #00f)}
+    `,
+    {
+      output: "hex"
+    }
+  )
+})

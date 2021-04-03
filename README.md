@@ -1,20 +1,27 @@
 # PostCSS Colornorm
 
-[PostCSS] plugin to normalize colors to a specific format.
-
-[PostCSS]: https://github.com/postcss/postcss
+[PostCSS] plugin to normalize colors using [colornorm] to a specific format.
 
 ```css
 .foo {
-    /* Input example */
+  background-color: rgb(255 0 0 / 1);
+  border-color: #ff0000ff;
+  outline-color: Red;
+  color: hsla(0, 100%, 50%, 1);
 }
 ```
 
 ```css
 .foo {
-  /* Output example */
+  background-color: hsl(0 100% 50%);
+  border-color: hsl(0 100% 50%);
+  outline-color: hsl(0 100% 50%);
+  color: hsl(0 100% 50%);
 }
 ```
+
+Defaults to `hsl`, as this is the most intuitive for humans, and supports all
+browsers back to IE9. _This can be changed with a setting._
 
 ## Usage
 
@@ -42,4 +49,19 @@ module.exports = {
 }
 ```
 
+Or to choose a different color output format, try:
+
+Valid output color formats can be found on the [colornorm] docs.
+
+```diff
+module.exports = {
+  plugins: [
++   require('postcss-colornorm')({ output: "hex" }),
+    require('autoprefixer')
+  ]
+}
+```
+
 [official docs]: https://github.com/postcss/postcss#usage
+[PostCSS]: https://github.com/postcss/postcss
+[colornorm]: https://github.com/tbjgolden/colornorm
