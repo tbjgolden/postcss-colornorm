@@ -1,5 +1,8 @@
 # PostCSS Colornorm
 
+[![npm version](https://img.shields.io/npm/v/postcss-colornorm.svg?style=flat-square)](https://www.npmjs.com/package/postcss-colornorm)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/tbjgolden/postcss-colornorm/Test?style=flat-square)](https://github.com/tbjgolden/postcss-colornorm/actions?query=workflow%3ATest)
+
 [PostCSS] plugin to normalize colors using [colornorm] to a specific format.
 
 ```css

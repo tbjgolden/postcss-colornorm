@@ -1,6 +1,6 @@
 {
   "name": "postcss-colornorm",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "PostCSS plugin to normalize colors to a specific format",
   "keywords": [
     "postcss",
